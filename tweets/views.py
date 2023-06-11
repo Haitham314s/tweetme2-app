@@ -22,7 +22,7 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
     Consume by js
     return json data
     """
-    data = {"id": tweet_id}
+    data = {"isUser": False, "id": tweet_id}
     status = 200
 
     try:
