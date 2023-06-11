@@ -1,13 +1,14 @@
 from random import randint
-from django.db.models import Model, AutoField, TextField, FileField, ForeignKey
+
 from django.contrib.auth import get_user_model
+from django.db.models import CASCADE, AutoField, FileField, ForeignKey, Model, TextField
 
 User = get_user_model()
 
 
 class Tweet(Model):
     id = AutoField(primary_key=True)
-    user = ForeignKey(User)
+    user = ForeignKey(User, on_delete=CASCADE)
     content = TextField(blank=True, null=True)
     image = FileField(upload_to="images/", blank=True, null=True)
 
