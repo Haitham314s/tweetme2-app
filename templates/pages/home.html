@@ -3,10 +3,14 @@
 {% block title %}Twitter Feed{% endblock %}
 
 {% block content %}
-<h1>Welcome to Twitter App</h1>
-<span>Powered by DJANGO</span>
+<div class="row text-center">
+  <div class="col">
+    <h1>Welcome to Tweets App</h1>
+    <span>Powered by DJANGO</span>
+  </div>
+</div>
 
-<div id="tweets">Loading...</div>
+<div class="row" id="tweets">Loading...</div>
 {% endblock %}
 
 {% block script %}
@@ -16,6 +20,7 @@
 
   function handleLike(tweetId, currentCount) {
     console.log(tweetId, currentCount)
+
   }
 
   function LikeBtn(tweet) {
@@ -24,7 +29,7 @@
 
   function formatTweetElement(tweet) {
     return `
-      <div class="mb-4" id="tweet-${tweet.id}">
+      <div class="col col-md-10 mx-auto border rounded py-3 mb-4" id="tweet-${tweet.id}">
         <p>${tweet.content}</p>
         <div class="btn-group">
           ${LikeBtn(tweet)}
