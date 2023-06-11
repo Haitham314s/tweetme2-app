@@ -5,10 +5,15 @@
 {% block content %}
 <h1>Welcome to Twitter App</h1>
 <span>Powered by DJANGO</span>
+
+<div id="tweets">Loading...</div>
 {% endblock %}
 
 {% block script %}
 <script>
+  const tweetsElement = document.getElementById("tweets")
+  // tweetsElement.innerHTML = "Loading..."
+
   const xhr = new XMLHttpRequest()
   const method = "GET"
   const url = "/tweets"
@@ -19,7 +24,19 @@
   xhr.onload = function () {
     const serverResponse = xhr.response
     var listedItems = serverResponse.response
-    console.log(listedItems)
+    var finalTweetStr = ""
+    var i;
+
+    for (i = 0; i < listedItems.length; i++) {
+      var currentItem = `
+      <div>
+        <h1>${listedItems[i].id}</h1>
+        <p>${listedItems[i].content}</p>
+      </div>
+      `
+      finalTweetStr += currentItem
+    }
+    tweetsElement.innerHTML = finalTweetStr
   }
   xhr.send()
 </script>
