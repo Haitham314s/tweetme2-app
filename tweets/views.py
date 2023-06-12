@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from tweetme2.settings import ALLOWED_HOSTS
+from tweetme2.settings import ALLOWED_HOSTS, LOGIN_URL
 
 from .forms import TweetForm
 from .models import Tweet
@@ -17,11 +17,21 @@ def home_view(request, *args, **kwargs):
 
 def tweet_create_view(request, *args, **kwargs):
     is_ajax = request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+    user = request.user
+    if not request.user.is_authenticated:
+        user = None
+
+    if not request.user.is_authenticated:
+        if is_ajax:
+            return JsonResponse({}, status=401)
+        return redirect(LOGIN_URL)
+
     form = TweetForm(request.POST or None)
     next_url = request.POST.get("next") or None
 
     if form.is_valid():
         obj = form.save(commit=False)
+        obj.user = request.user or None
         obj.save()
 
         if is_ajax:
