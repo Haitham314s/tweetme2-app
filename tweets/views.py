@@ -8,6 +8,7 @@ from tweetme2.settings import ALLOWED_HOSTS, LOGIN_URL
 
 from .forms import TweetForm
 from .models import Tweet
+from .serializers import TweetSerializer
 
 
 # Create your views here.
@@ -16,6 +17,15 @@ def home_view(request, *args, **kwargs):
 
 
 def tweet_create_view(request, *args, **kwargs):
+    serializer = TweetSerializer(data=request.POST or None)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return JsonResponse(serializer.data, status=201)
+
+    return JsonResponse({}, status=400)
+
+
+def tweet_create_view_pure_django(request, *args, **kwargs):
     is_ajax = request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
     user = request.user
     if not request.user.is_authenticated:

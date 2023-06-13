@@ -1,9 +1,8 @@
 from django.forms import ModelForm, ValidationError
 
+from tweetme2.settings import MAX_TWEET_LENGTH
+
 from .models import Tweet
-
-
-MAX_TWEET_LENGTH = 240
 
 
 class TweetForm(ModelForm):
