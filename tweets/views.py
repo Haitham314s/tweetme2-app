@@ -3,8 +3,14 @@ from random import randint
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 
 from tweetme2.settings import ALLOWED_HOSTS, LOGIN_URL
 
@@ -19,6 +25,8 @@ def home_view(request, *args, **kwargs):
 
 
 @api_view(["POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     serializer = TweetSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):

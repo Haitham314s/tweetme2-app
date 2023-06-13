@@ -70,7 +70,7 @@
           if (contentErrorMsg) handleTweetFormError(contentErrorMsg, true)
         } else alert("An error occured, please try again.")
 
-      } else if (xhr.status === 401) {
+      } else if ([401, 403].includes(xhr.status)) {
         alert("You must login!")
         windwo.location.href = "/login"
       } else if (xhr.status === 500) {
