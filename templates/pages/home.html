@@ -117,6 +117,23 @@
 
   function handleLike(tweetId, currentCount) {
     console.log(tweetId, currentCount)
+    const url = "/api/tweets/action"
+    const method = "POST"
+    const data = JSON.stringify({
+      id: tweetId,
+      action: "like"
+    })
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, url)
+    xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+    xhr.onload = function () {
+      console.log(xhr.status, xhr.repsonse)
+    }
+    xhr.send(data)
+
+    return 0
   }
 
   function LikeBtn(tweet) {
