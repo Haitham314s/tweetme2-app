@@ -16,7 +16,7 @@ from tweetme2.settings import ALLOWED_HOSTS, LOGIN_URL
 
 from .forms import TweetForm
 from .models import Tweet
-from .serializers import TweetSerializer
+from .serializers import TweetActionSerializer, TweetSerializer
 
 
 # Create your views here.
@@ -56,7 +56,7 @@ def tweet_list_view(request, *args, **kwargs):
 
 
 @api_view(["DELETE", "POST"])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([IsAuthenticated])
 def tweet_delete_view(request, tweet_id, *args, **kwargs):
     qs = Tweet.objects.filter(id=tweet_id)
     if not qs.exists():
@@ -68,6 +68,31 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
 
     obj = qs.first()
     obj.delete()
+    return Response({"message": "Tweet successfully removed"}, status=200)
+
+
+@api_view(["POST"])
+@authentication_classes([IsAuthenticated])
+def tweet_action_view(request, tweet_id, *args, **kwargs):
+    serializer = TweetActionSerializer(request.POST)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        tweet_id = data.get("id")
+        action = data.get("action")
+
+        qs = Tweet.objects.filter(id=tweet_id)
+        if not qs.exists():
+            return Response({}, status=404)
+
+        obj = qs.first()
+        if action == "like":
+            obj.likes.add(request.user)
+        elif action == "unlike":
+            obj.likes.remove(request.user)
+        elif action == "retweet":
+            # TODO: Create retweet feature
+            pass
+
     return Response({"message": "Tweet successfully removed"}, status=200)
 
 
