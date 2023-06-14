@@ -1,7 +1,11 @@
-from django.contrib.admin import ModelAdmin, site
+from django.contrib.admin import ModelAdmin, site, TabularInline
 
 # Register your models here.
-from .models import Tweet
+from .models import Tweet, TweetLike
+
+
+class TweetLikeAdmin(TabularInline):
+    model = TweetLike
 
 
 class TweetAdmin(ModelAdmin):
