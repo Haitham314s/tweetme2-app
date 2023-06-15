@@ -56,7 +56,7 @@ def tweet_list_view(request, *args, **kwargs):
 
 
 @api_view(["DELETE", "POST"])
-@authentication_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def tweet_delete_view(request, tweet_id, *args, **kwargs):
     qs = Tweet.objects.filter(id=tweet_id)
     if not qs.exists():
@@ -72,7 +72,7 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
 
 
 @api_view(["POST"])
-@authentication_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def tweet_action_view(request, tweet_id, *args, **kwargs):
     serializer = TweetActionSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
