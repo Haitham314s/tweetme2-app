@@ -15,6 +15,7 @@ from .models import Tweet
 class TweetActionSerializer(Serializer):
     id = IntegerField()
     action = CharField()
+    content = CharField(allow_blank=True, required=False)
 
     def validate_action(self, value):
         value = value.lower().strip()

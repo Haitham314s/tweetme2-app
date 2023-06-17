@@ -10,6 +10,7 @@ from django.db.models import (
     Model,
     TextField,
     DateTimeField,
+    SET_NULL,
 )
 
 User = get_user_model()
@@ -22,6 +23,7 @@ class TweetLike(Model):
 
 
 class Tweet(Model):
+    parent = ForeignKey("self", null=True, on_delete=SET_NULL)
     id = AutoField(primary_key=True)
     user = ForeignKey(User, on_delete=CASCADE)
     likes = ManyToManyField(
