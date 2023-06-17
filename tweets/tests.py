@@ -80,3 +80,21 @@ class TweetTestCase(TestCase):
         response_data = response.json()
         new_tweet_id = response_data.get("id")
         self.assertEqual(self.current_count + 1, new_tweet_id)
+
+    def test_tweet_detail_api_view(self):
+        client = self.get_client()
+        response = client.get("/api/tweets/1")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        _id = data.get("id")
+        self.assertEqual(_id, 1)
+
+    def test_tweet_delete_api_view(self):
+        client = self.get_client()
+        response = client.delete("/api/tweets/1/delete")
+        self.assertEqual(response.status_code, 200)
+
+        client = self.get_client()
+        response = client.delete("/api/tweets/1/delete")
+        self.assertEqual(response.status_code, 404)
