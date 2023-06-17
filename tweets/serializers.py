@@ -27,26 +27,6 @@ class TweetActionSerializer(Serializer):
 
 class TweetCreateSerializer(ModelSerializer):
     likes = SerializerMethodField(read_only=True)
-    content = SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = Tweet
-        fields = ["id", "content", "likes"]
-
-    def get_likes(self, obj):
-        return obj.likes.count()
-
-    def get_content(self, obj):
-        content = obj.content
-        if obj.is_retweet:
-            content = obj.parent.content
-
-        return content
-
-
-class TweetSerializer(ModelSerializer):
-    likes = SerializerMethodField(read_only=True)
-    parent = TweetCreateSerializer(source="parent", read_only=True)
 
     class Meta:
         model = Tweet
@@ -60,3 +40,15 @@ class TweetSerializer(ModelSerializer):
             raise ValidationError("This tweet is too long")
 
         return value
+
+
+class TweetSerializer(ModelSerializer):
+    likes = SerializerMethodField(read_only=True)
+    parent = TweetCreateSerializer(read_only=True)
+
+    class Meta:
+        model = Tweet
+        fields = ["id", "content", "likes", "is_retweet", "parent"]
+
+    def get_likes(self, obj):
+        return obj.likes.count()

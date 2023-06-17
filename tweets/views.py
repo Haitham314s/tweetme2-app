@@ -138,7 +138,7 @@ def tweet_create_view_pure_django(request, *args, **kwargs):
 def tweet_list_view_pure_django(request, *args, **kwargs):
     qs = Tweet.objects.all()
     tweets_list = [x.serialize() for x in qs]
-    data = {"response": tweets_list}
+    data = {"isUser": False, "response": tweets_list}
     return JsonResponse(data)
 
 
@@ -148,7 +148,7 @@ def tweet_detail_view_pure_django(request, tweet_id, *args, **kwargs):
     Consume by js
     return json data
     """
-    data = {"isUser": False, "id": tweet_id}
+    data = {"id": tweet_id}
     status = 200
 
     try:

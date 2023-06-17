@@ -33,8 +33,8 @@ class Tweet(Model):
     image = FileField(upload_to="images/", blank=True, null=True)
     timestamp = DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.content
+    # def __str__(self):
+    #     return self.content
 
     class Meta:
         ordering = ["-id"]
