@@ -16,7 +16,7 @@ from tweetme2.settings import ALLOWED_HOSTS, LOGIN_URL
 
 from .forms import TweetForm
 from .models import Tweet
-from .serializers import TweetActionSerializer, TweetSerializer
+from .serializers import TweetActionSerializer, TweetCreateSerializer, TweetSerializer
 
 
 # Create your views here.
@@ -28,7 +28,7 @@ def home_view(request, *args, **kwargs):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
-    serializer = TweetSerializer(data=request.POST)
+    serializer = TweetCreateSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data, status=201)
